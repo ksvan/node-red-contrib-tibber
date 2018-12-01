@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    RED.nodes.registerType('TibberConfig',{
+        category: 'config',
+        defaults: {
+            displayName: {value:"Tibber Site"},
+            siteName: {value:"Home"},
+            endPointHost: {value:"api.tibber.com", required: true},
+            endPointPath: {value:"v1-beta/gql", required: true},
+        },
+        credentials: {
+            token: {value:"1234",required:true},
+        },
+        label: function() {
+            return siteName || 'TibberConfig';
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="TibberConfig">
+    <div class="form-row">
+        <label for="node-config-input-token"><i class="icon-bookmark"></i> Token </label>
+        <input type="text" id="node-config-input-token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-siteName"><i class="icon-bookmark"></i> Sitename </label>
+        <input type="text" id="node-config-input-siteName">
+    </div>
+    <div class="form-row">
+        <label for="node-input-endpointHost"><i class="icon-bookmark"></i> Server </label>
+        <input type="text" id="node-config-input-endpointHost">
+    </div>
+    <div class="form-row">
+        <label for="node-input-endpointPath"><i class="icon-bookmark"></i> API path </label>
+        <input type="text" id="node-config-input-endpointPath">
+    </div>
+</script>
