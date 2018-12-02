@@ -7,8 +7,7 @@ module.exports = function (RED) {
     this.password = config.password;
     this.siteName = config.siteName;
     this.displayName = config.displayName;
-    this.endpointHost = config.endpointHost;
-    this.endpointPath = config.endpointPath;
+    this.endpoint = config.endpoint;
   }
   RED.nodes.registerType('TibberConfig', TibberConfig, {
     credentials: {

@@ -32,7 +32,7 @@ describe('Tibber config node-red', function () {
 
   // Node should have logon credentials needed
   it('should have credentials', function (done) {
-    let flow = [{ id: 'n1', type: 'TibberConfig', displayName: 'Tibber Site', endpointPath: 'v1-beta/gql', endpointHost: 'api.tibber.com' }];
+    let flow = [{ id: 'n1', type: 'TibberConfig', displayName: 'Tibber Site', endpoint: 'https://api.tibber.com/v1-beta/gql' }];
     let credentials = { n1: { 'username': tibberEmail, 'password': tibberPassword, 'token': '12345' } };
     helper.load(tibberNode, flow, credentials, function () {
       let n1 = helper.getNode('n1');
@@ -45,11 +45,10 @@ describe('Tibber config node-red', function () {
 
   // node should have config endpoints
   it('should have endpoints', function (done) {
-    let flow = [{ id: 'n1', type: 'TibberConfig', displayName: 'Tibber home', endpointPath: 'v1-beta/gql', endpointHost: 'api.tibber.com' }];
+    let flow = [{ id: 'n1', type: 'TibberConfig', displayName: 'Tibber home', endpoint: 'https://api.tibber.com/v1-beta/gql' }];
     helper.load(tibberNode, flow, function () {
       let n1 = helper.getNode('n1');
-      n1.should.have.property('endpointHost', 'api.tibber.com');
-      n1.should.have.property('endpointPath', 'v1-beta/gql');
+      n1.should.have.property('endpoint', 'https://api.tibber.com/v1-beta/gql');
       done();
     });
   });

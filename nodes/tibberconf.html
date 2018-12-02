@@ -4,14 +4,13 @@
         defaults: {
             displayName: {value:"Tibber Site"},
             siteName: {value:"Home"},
-            endPointHost: {value:"api.tibber.com", required: true},
-            endPointPath: {value:"v1-beta/gql", required: true},
+            endpoint: {value:"https://api.tibber.com/v1-beta/gql", required: true},
         },
         credentials: {
             token: {value:"1234",required:true},
         },
         label: function() {
-            return siteName || 'TibberConfig';
+            return displayName || 'TibberConfig';
         }
     });
 </script>
@@ -22,15 +21,15 @@
         <input type="text" id="node-config-input-token">
     </div>
     <div class="form-row">
-        <label for="node-input-siteName"><i class="icon-bookmark"></i> Sitename </label>
+        <label for="node-i-config-nput-siteName"><i class="icon-bookmark"></i> Sitename </label>
         <input type="text" id="node-config-input-siteName">
     </div>
     <div class="form-row">
-        <label for="node-input-endpointHost"><i class="icon-bookmark"></i> Server </label>
-        <input type="text" id="node-config-input-endpointHost">
+        <label for="node-i-config-nput-displayName"><i class="icon-bookmark"></i> Displayname </label>
+        <input type="text" id="node-config-input-displayName">
     </div>
     <div class="form-row">
-        <label for="node-input-endpointPath"><i class="icon-bookmark"></i> API path </label>
-        <input type="text" id="node-config-input-endpointPath">
+        <label for="node-config-input-endpoint"><i class="icon-bookmark"></i> Server </label>
+        <input type="text" id="node-config-input-endpoint">
     </div>
 </script>
