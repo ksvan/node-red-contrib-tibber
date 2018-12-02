@@ -61,7 +61,7 @@ To use Tibbers API, you would need to get a token from them. The simplest way is
 The lib can get endpoint config from a file in the running directory called .envt. Method ''readConfig() will load endpoint and token from this file
 
     {
-    "token": "5aaaee58880ae4533495d97a8eafd92d7b6c433e2c2c93512174c880cf46188e",
+    "token": "5aaaee588823X453349447a8eafd923346c433e2c2335532174c880cf46188e",
     "url": "https://api.tibber.com/v1-beta/gql"
     }
 
