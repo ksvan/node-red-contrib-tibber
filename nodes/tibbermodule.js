@@ -19,9 +19,9 @@ module.exports = {
     return 'test';
   },
   // Function to read config, incl token, from file if needed
-  readConfig: function () {
+  readConfig: function (file) {
     try {
-      let conf = JSON.parse(fs.readFileSync('.envt', 'utf8'));
+      let conf = JSON.parse(fs.readFileSync(file, 'utf8'));
       token = conf.token;
       // endpointHost = conf.endpointHost;
       // endpointPath = conf.endpointPath;
