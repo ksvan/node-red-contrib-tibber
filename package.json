@@ -14,6 +14,7 @@
     "url": "https://github.com/ksvan/node-red-contrib-tibber/issues"
   },
   "scripts": {
+    "pretest": "eslint nodes/*.js",
     "test": "mocha tests/*_spec.js"
   },
   "repository": {
@@ -30,15 +31,16 @@
   "devDependencies": {
     "eslint": "^5.8.0",
     "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-json": "^1.3.2",
     "eslint-plugin-mocha": "^5.2.0",
     "eslint-plugin-node": "^8.0.0",
-    "mocha": "^5.2.0",
-    "node-red-node-test-helper": "^0.1.8",
-    "node-red": "^0.18.7",
-    "should": "^13.2.3",
     "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-standard": "^4.0.0"
+    "eslint-plugin-standard": "^4.0.0",
+    "mocha": "^5.2.0",
+    "node-red": "^0.18.7",
+    "node-red-node-test-helper": "^0.1.8",
+    "should": "^13.2.3"
   },
   "node-red": {
     "nodes": {

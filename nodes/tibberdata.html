@@ -1,0 +1,39 @@
+<script type="text/javascript">
+    RED.nodes.registerType('TibberDataNode',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            options: {value:"",type:"TibberConfig", required:true},
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name||"TibberDataNode";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="TibberDataNode">
+    <div class="form-row">
+        <label for="node-input-options"><i class="icon-tag"></i> Credentials </label>
+        <input type="text" id="node-input-options" placeholder="user">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="TibberDataNode">
+    <p>A node for interacting with Tibber electricity provider. Using their graphql interface to get pricing, consumption etc. </p>
+    <p> This node get predefined datasets when you send payload on the following format <br>
+         msg.payload = '{type: 'homes'}';
+         msg.payload = '{type: 'pricing'}';
+         msg.payload = '{type: 'consumption'}';
+         msg.payload = '{type: 'heatingSource'}';
+         msg.payload = '{type: 'currentUser'}';
+    </p>
+</script>
