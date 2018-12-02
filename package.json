@@ -6,6 +6,12 @@
   "directories": {
     "test": "tests"
   },
+  "homepage": "https://github.com/ksvan/node-red-contrib-tibber#readme",
+  "author": "Kristian Svantorp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ksvan/node-red-contrib-tibber/issues"
+  },
   "scripts": {
     "test": "mocha tests/*_spec.js"
   },
@@ -20,13 +26,13 @@
     "smarthome",
     "energy"
   ],
-  "author": "Kristian Svantorp",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ksvan/node-red-contrib-tibber/issues"
-  },
-  "homepage": "https://github.com/ksvan/node-red-contrib-tibber#readme",
   "devDependencies": {
+    "eslint": "^5.8.0",
+    "eslint-config-google": "^0.10.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-mocha": "^5.2.0",
+    "eslint-plugin-node": "^7.0.1",
+    "mocha": "^5.2.0",
     "node-red-node-test-helper": "^0.1.8",
     "should": "^13.2.3"
   },
