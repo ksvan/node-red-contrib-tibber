@@ -4,7 +4,8 @@
   "description": "Node-red package for using the Tibber API",
   "main": "index.js",
   "directories": {
-    "test": "tests"
+    "test": "tests",
+    "nodes": "nodes"
   },
   "homepage": "https://github.com/ksvan/node-red-contrib-tibber#readme",
   "author": "Kristian Svantorp",
@@ -34,15 +35,15 @@
     "eslint-plugin-node": "^7.0.1",
     "mocha": "^5.2.0",
     "node-red-node-test-helper": "^0.1.8",
+    "node-red": "^0.18.7",
     "should": "^13.2.3"
   },
   "node-red": {
     "nodes": {
-      "sample": "nodes/tibberconf.js"
+      "TibberConfig": "nodes/tibberconf.js"
     }
   },
   "dependencies": {
-    "graphql-request": "^1.8.2",
     "node-fetch": "^2.3.0"
   }
 }
