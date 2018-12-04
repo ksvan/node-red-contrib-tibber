@@ -23,8 +23,6 @@ module.exports = {
     try {
       let conf = JSON.parse(fs.readFileSync(file, 'utf8'));
       token = conf.token;
-      // endpointHost = conf.endpointHost;
-      // endpointPath = conf.endpointPath;
       url = conf.url;
       return conf;
     }
@@ -58,10 +56,18 @@ module.exports = {
 
   // use fetch async to execute query and return json
   getData: async function (url, payload) {
+    console.log('getdata: ' + url + ' ' + payload);
     try {
       let response = await fetch(url, payload);
       const json = await response.text();
-      return JSON.parse(json).data.viewer;
+      console.dir(json);
+      let result = JSON.parse(json);
+      if (result.errors) {
+        return { 'error': true, 'message': result.errors.message };
+      }
+      else {
+        return result.data.viewer;
+      }
     }
     catch (error) {
       console.log('error');

@@ -3,10 +3,9 @@ module.exports = function (RED) {
   'use strict';
   function TibberConfig (config) {
     RED.nodes.createNode(this, config);
-    this.username = config.username;
-    this.password = config.password;
     this.siteName = config.siteName;
     this.displayName = config.displayName;
+    this.name = config.displayName;
     this.endpoint = config.endpoint;
   }
   RED.nodes.registerType('TibberConfig', TibberConfig, {
