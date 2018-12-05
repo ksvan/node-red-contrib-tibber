@@ -56,11 +56,11 @@ module.exports = {
 
   // use fetch async to execute query and return json
   getData: async function (url, payload) {
-    console.log('getdata: ' + url + ' ' + payload);
+    // console.log('getdata: ' + url + ' ' + payload);
     try {
       let response = await fetch(url, payload);
       const json = await response.text();
-      console.dir(json);
+      // console.dir(json);
       let result = JSON.parse(json);
       if (result.errors) {
         return { 'error': true, 'message': result.errors.message };

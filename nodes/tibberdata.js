@@ -16,22 +16,19 @@ module.exports = function (RED) {
     // validate config
     if (typeof node.options === 'undefined' || !node.options || !node.options.credentials.token || !node.options.endpoint) {
       node.warn('No credentials given! Missing config node details. l-19 :' + node.options);
-      console.log('No config data node');
       return;
     }
-    console.dir(this.options);
-    console.log('starting data node');
     tibber.setConfig({ token: node.options.credentials.token, url: node.options.endpoint });
 
     node.on('input', function (msg) {
-      console.log('Receieved at data node');
       // on msg.payload arrives, try to execute predefined query from tibberlib. Handle fails
-      tibber.get('homes').then((result, err) => {
-        msg.payload = result.homes;
+      tibber.get(msg.payload.type).then((result, err) => {
+        msg.payload = result;
         node.send(msg);
       }).catch((err) => {
         node.warn('error: ' + err);
         node.debug(err);
+        console.log(err);
       });
     });
   }

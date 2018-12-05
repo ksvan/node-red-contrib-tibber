@@ -2,7 +2,8 @@
 'use strict';
 var should = require('should');
 var helper = require('node-red-node-test-helper');
-var tibberNode = require('../nodes/tibberdata.js');
+var tibberDataNode = require('../nodes/tibberdata.js');
+var tibberConfNode = require('../nodes/tibberconf.js');
 const tibberEmail = 'test@fest.no';
 const tibberPassword = '12345';
 helper.init(require.resolve('node-red'));
@@ -22,10 +23,10 @@ describe('Tibber Data fetch node-red', function () {
 
   // node should be loaded fine in the runtime
   it('should be loaded', function (done) {
-    let flow = [{ id: 'n1', type: 'TibberDataNode', name: 'Tibber Home Data' }];
-    helper.load(tibberNode, flow, function () {
+    let flow = [{ id: 'n1', type: 'TibberDataNode', displayName: 'Tibber Home Data', endpoint: 'https://api.tibber.com/v1-beta/gql' }];
+    helper.load(tibberDataNode, flow, function () {
       let n1 = helper.getNode('n1');
-      n1.should.have.property('name', 'Tibber Home Data');
+      n1.should.have.property('displayName', 'Tibber Home Data');
       done();
     });
   });
@@ -37,11 +38,34 @@ describe('Tibber Data fetch node-red', function () {
       { id: 'n1', type: 'TibberDataNode', name: 'Tibber Home Data', options: 'nc', wires: [['nh']] },
       { id: 'nh', type: 'helper', 'z': 'f1' }
     ];
-    let credentials = { n1: { 'username': tibberEmail, 'password': tibberPassword, 'token': '12dgdgg335SDGHJFFYGDFD345' } };
-    helper.load(tibberNode, flow, credentials, function () {
+    let credentials = { nc: { 'token': '12dgdgg335SDGHJFFYGDFD345' } };
+    helper.load([tibberDataNode, tibberConfNode], flow, credentials, function () {
       let n1 = helper.getNode('n1');
-     
+      n1.options.credentials.should.have.property('token');
+      // check if credentials are there
       done();
+    });
+  });
+
+  // Node should have logon credentials needed
+  it('should fetch homes', function (done) {
+    let flow = [
+      { id: 'nc', type: 'TibberConfig', displayName: 'Tibber Site', endpoint: 'https://api.tibber.com/v1-beta/gql' },
+      { id: 'n1', type: 'TibberDataNode', name: 'Tibber Home Data', options: 'nc', wires: [['nh']] },
+      { id: 'nh', type: 'helper' }
+    ];
+    // demo token from tibber only
+    let credentials = { nc: { 'token': 'd1007ead2dc84a2b82f0de19451c5fb22112f7ae11d19bf2bedb224a003ff74a' } };
+    helper.load([tibberDataNode, tibberConfNode], flow, credentials, function () {
+      let n1 = helper.getNode('n1');
+      let nh = helper.getNode('nh');
+      n1.options.credentials.should.have.property('token');
+      nh.on('input', function (msg) {
+        msg.payload.homes[0].should.have.property('id');
+        msg.payload.homes[0].address.should.have.property('city', 'Stockholm');
+        done();
+      });
+      n1.receive({ payload: { type: 'homes' } });
     });
   });
 });
