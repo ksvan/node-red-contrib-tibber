@@ -19,11 +19,11 @@ This node holds the credentials for accessing the Tibber API and your settings.
 ## Data node
 This node provides consumption, home or pricing data and statistics for the house. Which dataset you want is defined by 'msg.payload' content sent to the node. The nodes expect json input. Yet quite simple, but this is to cater for soon to come needs to given parameters like time resolution, home ID etc etc
     
-    msg.payload = '{type: 'homes'}';
-    msg.payload = '{type: 'pricing'}';
-    msg.payload = '{type: 'consumption'}';
-    msg.payload = '{type: 'heatingSource'}';
-    msg.payload = '{type: 'currentUser'}';
+    msg.payload = {type: 'homes'};
+    msg.payload = {type: 'pricing'};
+    msg.payload = {type: 'consumption'};
+    msg.payload = {type: 'heatingSource'};
+    msg.payload = {type: 'currentUser'};
 
 
 ## Query node
