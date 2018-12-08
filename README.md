@@ -32,7 +32,13 @@ This nodes lets you perform your own queries. Look up Tibber API documentation a
 ## Error return values
 Errors are returned as json objects with the following format
 
-    {error: true, message: errorobject}
+    {error: true, details: errorobject}
+
+One example of error object, if you chose the predefined query 'error', you will get this
+    
+    [ { message: 'Cannot query field "generate" on type "Query".',
+    locations: [ [Object] ],
+    extensions: { code: 'GRAPHQL_VALIDATION_FAILED' } } ]
 
 ## Tibberlib
 Nodejs simple module used across the nodes for different functions. Meant to cater for Tibber usage in other scenarios than node-red usage and to simplify, yet provide flexibility by having direct query possibilities too.

@@ -9,7 +9,8 @@ const queries = {
   consumption: { query: '{viewer { homes {consumption(resolution: DAILY, last: 7) { nodes { from to totalCost unitCost unitPrice unitPriceVAT consumption consumptionUnit}}}}}' },
   price: { query: '{viewer {homes {currentSubscription {priceInfo {current {total energy tax startsAt }}}}}}' },
   homes: { query: '{viewer {homes {id timeZone features{realTimeConsumptionEnabled} address {address1 postalCode city } owner {firstName lastName contactInfo {email mobile } } } } }' },
-  currentUser: { 'query': '{ viewer { name }}' }
+  currentUser: { 'query': '{ viewer { name }}' },
+  error: { 'query': '{generate {error}}' } // for testing purpose, non-happy flow
 };
 
 module.exports = {
@@ -54,25 +55,25 @@ module.exports = {
     return opts;
   },
 
-  // use fetch async to execute query and return json
+  // use fetch async to execute query and return parsed json
   getData: async function (url, payload) {
-    // console.log('getdata: ' + url + ' ' + payload);
     try {
       let response = await fetch(url, payload);
-      const json = await response.text();
+      if (response.status < 200 || response.status >= 300) {
+        return { 'error': true, 'details': { 'status': response.status, 'statusText': response.statusText } };
+      }
+      let json = await response.text();
       // console.dir(json);
       let result = JSON.parse(json);
-      if (result.errors) {
-        return { 'error': true, 'message': result.errors.message };
+      if (typeof result.errors !== 'undefined') {
+        return { 'error': true, 'details': result.errors };
       }
       else {
         return result.data.viewer;
       }
     }
     catch (error) {
-      console.log('error');
-      console.dir(error);
-      return { 'error': true, 'message': error };
+      return { 'error': true, 'details': error };
     }
   },
   // Function for getting users home data
