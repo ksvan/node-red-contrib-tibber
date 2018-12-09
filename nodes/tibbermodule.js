@@ -79,5 +79,9 @@ module.exports = {
   // Function for getting users home data
   get: function (query) {
     return this.getData(url, this.createRequest(queries[query]));
+  },
+  // function for sending your own query
+  query: function (query) {
+    return this.getData(url, this.createRequest(query));
   }
 };

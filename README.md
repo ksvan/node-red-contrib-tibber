@@ -28,6 +28,12 @@ This node provides consumption, home or pricing data and statistics for the hous
 
 ## Query node
 This nodes lets you perform your own queries. Look up Tibber API documentation and especially their API explorer to get going.
+In the future, this node is meant to also have features to make it easier to work with the data and incorporate it in the flows, hence separated from the data node. 
+
+The node expects json formated graphQL queries
+
+    msg.payload = { 'query': '{ viewer { name }}'};
+    msg.payload = { 'query': '{viewer {homes {primaryHeatingSource } } }' };
 
 ## Error return values
 Errors are returned as json objects with the following format
@@ -40,10 +46,13 @@ One example of error object, if you chose the predefined query 'error', you will
     locations: [ [Object] ],
     extensions: { code: 'GRAPHQL_VALIDATION_FAILED' } } ]
 
+In general, the node code and tibberLib seeks to surface the underlying issues and propagate the full error stack. 
+
 ## Tibberlib
 Nodejs simple module used across the nodes for different functions. Meant to cater for Tibber usage in other scenarios than node-red usage and to simplify, yet provide flexibility by having direct query possibilities too.
 
 * Get config from file
+* Set and get config
 * Get Home overview 
 * Get statistics
 * Get consumption
@@ -61,7 +70,7 @@ The query function will return the resulting data set below result.data.viewer i
 
 
 ### Token
-To use Tibbers API, you would need to get a token from them. The simplest way is to register at http://developer.tibber.com and get a personal long lived token. They also provide the possibility to register an Oauth client with them to make more user friendly applications.
+To use Tibbers API, you would need to get a token from them. The simplest way is to register at http://developer.tibber.com and get a personal long lived token. They also provide the possibility to register an Oauth client with them to make more user friendly applications. The test code in this repo uses the demo token from Tibber.
 
 ### Config of TibberLib
 The lib can get endpoint config from a file in the running directory called .envt. Method ''readConfig() will load endpoint and token from this file
@@ -71,13 +80,22 @@ The lib can get endpoint config from a file in the running directory called .env
     "url": "https://api.tibber.com/v1-beta/gql"
     }
 
-Used with nodered, the config node should usually provide this by calling 'config(options)'.
+Used with nodered, the config node should usually provide this by calling 'setConfig(options)'.
     
-    let conf = tibberLib.config({ url: 'https://bull.noshit', token: '8488484842394949jjfig3j' });
+    let conf = tibberLib.setConfig({ url: 'https://bull.noshit', token: '8488484842394949jjfig3j' });
 
 URL setting can be used if you want to provide endpoint for another version, like beta usage. Look up endpoints at http://developer.tibber.com
 
 # Technical details
 * Tibber API is GraphQL based and all
 * Https connection is done async with node-fetch.
+
+# Troubleshooting
+* As always, networking issues might occur. These will be surfaced, but connection timeouts will be as slow as configured in your OS
+* GraphQL errors will mostly return 400 bad query. You could debug your query with Tibbers GraphQL explorer
+* 
+
+
+
+
 

@@ -1,10 +1,11 @@
 module.exports = function (RED) {
-  function TibberDataNode (config) {
+  function TibberQueryNode (config) {
     RED.nodes.createNode(this, config);
     var node = this;
     // set upp tibber integration for this node
     const tibber = require('./tibbermodule.js');
     node.displayName = config.displayName;
+    node.name = config.displayName;
     // get the config
     try {
       this.options = RED.nodes.getNode(config.options);
@@ -22,7 +23,11 @@ module.exports = function (RED) {
 
     node.on('input', function (msg) {
       // on msg.payload arrives, try to execute predefined query from tibberlib. Handle fails
-      tibber.get(msg.payload.type).then((result, err) => {
+      if (typeof msg.payload.query === 'undefined' || msg.payload.query === '') {
+        return { error: true, details: 'Missing query in payload' };
+      }
+      // Todo: add possibilities for other type of data returns, ie specific value only
+      tibber.query(msg.payload).then((result, err) => {
         msg.payload = result;
         node.send(msg);
       }).catch((err) => {
@@ -31,5 +36,5 @@ module.exports = function (RED) {
       });
     });
   }
-  RED.nodes.registerType('TibberDataNode', TibberDataNode);
+  RED.nodes.registerType('TibberQueryNode', TibberQueryNode);
 };
