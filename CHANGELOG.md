@@ -20,10 +20,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # 0.2.0
 ## Addedd
+- tibber query node
 
 ## Changed
 
 ## Fixed
+- error handling improved
+- better test coverage
 
 # 0.1.0 (09.12.18)
 
