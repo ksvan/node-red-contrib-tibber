@@ -8,7 +8,13 @@ Very EARLY stage development!
 [![Build Status](https://travis-ci.com/ksvan/node-red-contrib-tibber.svg?branch=master)](https://travis-ci.com) [![Greenkeeper badge](https://badges.greenkeeper.io/ksvan/node-red-contrib-tibber.svg)](https://greenkeeper.io/)
 
 # Install
+To install (node-red)
+To install the stable version use the `Menu - Manage palette` option and search for `node-red-contrib-verisure`, or run the following command in your Node-RED user directory (typically `~/.node-red`):
 
+    $ npm i node-red-contrib-verisure
+    
+Or, to install, download the files to a local folder, same structure. In this packages directory, run npm install or link. Switch to your .node-red directory and use npm link node-red-contrib-verisure (or npm install). Link is good if you want change the code and test.
+[NPMJS link](https://www.npmjs.com/package/node-red-contrib-verisure)
 
 
 # Nodes and functions
@@ -76,7 +82,7 @@ To use Tibbers API, you would need to get a token from them. The simplest way is
 The lib can get endpoint config from a file in the running directory called .envt. Method ''readConfig() will load endpoint and token from this file
 
     {
-    "token": "5aaaee588823X453349447a8eafd923346c433e2c2335532174c880cf46188e",
+    "token": "5asaee58823X4WE3349447a8eafd923346c433e2c23355321h24c880cf46289t",
     "url": "https://api.tibber.com/v1-beta/gql"
     }
 
