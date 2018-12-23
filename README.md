@@ -33,13 +33,22 @@ This node provides consumption, home or pricing data and statistics for the hous
 
 
 ## Query node
-This nodes lets you perform your own queries. Look up Tibber API documentation and especially their API explorer to get going.
+This nodes lets you perform your own GraphQL queries. Look up Tibber API documentation and especially their API explorer to get going.
 In the future, this node is meant to also have features to make it easier to work with the data and incorporate it in the flows, hence separated from the data node. 
 
 The node expects json wrapped graphQL queries. This is to open for more parameters in the object in the future, without having breaking changes in the node
 
     msg.payload = { 'query': '{ viewer { name }}'};
-    msg.payload = { 'query': '{viewer {homes {primaryHeatingSource } } }' };
+    msg.payload = { 'query': '{ viewer { homes { primaryHeatingSource } } }' };
+
+## Return objects & values
+This will follow the Tibber datamodel for GraphQL and be highly dependent on your actually query. It's not as fixed as when working with REST APIs.
+In general, all returns top node is "data", and the next level will be dependent on what you are doing. A straigth forward query, as the built in ones, will then have a Viewer object. This contains your result. A mutation will probably have the specific results asked directly under the data object.
+In general, tibberLib returns whatever is below the Data object.
+
+An example of payload after a successful mutation for sending push notification to Tibber app.
+
+    { payload:   { sendPushNotification: { successful: true, pushedToNumberOfDevices: 1 } }
 
 ## Error return values
 Errors are returned as json objects with the following format
@@ -55,7 +64,7 @@ One example of error object, if you chose the predefined query 'error', you will
 In general, the node code and tibberLib seeks to surface the underlying issues and propagate the full error stack. 
 
 ## Tibberlib
-Nodejs simple module used across the nodes for different functions. Meant to cater for Tibber usage in other scenarios than node-red usage and to simplify, yet provide flexibility by having direct query possibilities too.
+Simple nodejs module used across the nodes for different functions. Meant to cater for Tibber usage in other scenarios than node-red usage and to simplify, yet provide flexibility by having direct query possibilities too.
 
 * Get config from file
 * Set and get config
@@ -86,19 +95,29 @@ The lib can get endpoint config from a file in the running directory called .env
     "url": "https://api.tibber.com/v1-beta/gql"
     }
 
-Used with nodered, the config node should usually provide this by calling 'setConfig(options)'.
+Used with nodered, the config node will provide this by calling 'setConfig(options)'.
     
     let conf = tibberLib.setConfig({ url: 'https://bull.noshit', token: '8488484842394949jjfig3j' });
+
+In node-red, configure the configuration node with these parameters.
 
 URL setting can be used if you want to provide endpoint for another version, like beta usage. Look up endpoints at http://developer.tibber.com
 
 # Technical details
-* Tibber API is GraphQL based and all
-* Https connection is done async with node-fetch.
+* Tibber API is GraphQL based
+* Https connection for these nodes are done async with node-fetch.
+* Token needed is provided by Tibber at their developer portal. They also provide a demo/test token there, used in my test code here as well
+
+## What is GraphQL
+GraphQL is a query language for your API, and a server-side runtime for executing queries by using a type system you define for your data. GraphQL isn't tied to any specific database or storage engine and is instead backed by your existing code and data.
+
+GraphQL is used like you would use REST APIs, to get data or execute function. You will connect with HTTPS and send JSON, but there is only one shared endpoint for all purposes. Getting different data is done by changing your query, not the endpoint. 
+
+[[https://graphql.org/learn/]]
 
 # Troubleshooting
 * As always, networking issues might occur. These will be surfaced, but connection timeouts will be as slow as configured in your OS
-* GraphQL errors will mostly return 400 bad query. You could debug your query with Tibbers GraphQL explorer
+* GraphQL errors will mostly return 400 bad query. You could debug your query with Tibbers GraphQL explorer or debug the error object and dig into the details element of it. The nodes and tibberlib will try to surface underlying errors here.
 * 
 
 
