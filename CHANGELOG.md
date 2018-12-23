@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Changed
 * Improved error handling
 * Improved error messaging
+* Query node support for variable input along with query or mutation.
+* Further support/test of mutation
 
 
 # 0.2.0

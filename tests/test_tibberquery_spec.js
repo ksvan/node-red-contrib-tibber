@@ -4,6 +4,7 @@ var should = require('should');
 var helper = require('node-red-node-test-helper');
 var tibberQueryNode = require('../nodes/tibberquery.js');
 var tibberConfNode = require('../nodes/tibberconf.js');
+var demoToken = 'd1007ead2dc84a2b82f0de19451c5fb22112f7ae11d19bf2bedb224a003ff74a';
 helper.init(require.resolve('node-red'));
 
 describe('Tibber Data fetch node-red', function () {
@@ -43,7 +44,7 @@ describe('Tibber Data fetch node-red', function () {
       // check if credentials are there
       done();
     });
-  });
+  }); // it end
 
   // Node should fetch house primary heating source
   it('should fetch heating source', function (done) {
@@ -53,7 +54,7 @@ describe('Tibber Data fetch node-red', function () {
       { id: 'nh', type: 'helper' }
     ];
     // demo token from tibber only
-    let credentials = { nc: { 'token': 'd1007ead2dc84a2b82f0de19451c5fb22112f7ae11d19bf2bedb224a003ff74a' } };
+    let credentials = { nc: { 'token': demoToken } };
     helper.load([tibberQueryNode, tibberConfNode], flow, credentials, function () {
       let n1 = helper.getNode('n1');
       let nh = helper.getNode('nh');
@@ -65,6 +66,29 @@ describe('Tibber Data fetch node-red', function () {
       });
       n1.receive({ payload: { query: '{viewer {homes {primaryHeatingSource } } }' } });
     });
+  }); // it end
+
+  // Node should get accepted query, but be denied mutation due to demo token
+  it('should do mutation', function (done) {
+    let flow = [
+      { id: 'nc', type: 'TibberConfig', displayName: 'Tibber Site', endpoint: 'https://api.tibber.com/v1-beta/gql' },
+      { id: 'n1', type: 'TibberQueryNode', name: 'Tibber Query Data', options: 'nc', wires: [['nh']] },
+      { id: 'nh', type: 'helper' }
+    ];
+    // demo token from tibber only
+    let credentials = { nc: { 'token': demoToken } };
+    helper.load([tibberQueryNode, tibberConfNode], flow, credentials, function () {
+      let n1 = helper.getNode('n1');
+      let nh = helper.getNode('nh');
+      n1.options.credentials.should.have.property('token');
+      nh.on('input', function (msg) {
+        msg.payload.should.have.property('error', true);
+        msg.payload.should.have.property('details');
+        msg.payload.details[0].should.have.property('message', 'operation not allowed for demo user');
+        done();
+      });
+      n1.receive({ payload: { 'query': 'mutation{ sendMeterReading(input:{homeId:"some home id", reading: 123}){time reading  }}' } });
+    });
   });
 
   // Node should fail gracefuly
@@ -75,7 +99,7 @@ describe('Tibber Data fetch node-red', function () {
       { id: 'nh', type: 'helper' }
     ];
     // demo token from tibber only
-    let credentials = { nc: { 'token': 'd1007ead2dc84a2b82f0de19451c5fb22112f7ae11d19bf2bedb224a003ff74a' } };
+    let credentials = { nc: { 'token': demoToken } };
     helper.load([tibberQueryNode, tibberConfNode], flow, credentials, function () {
       let n1 = helper.getNode('n1');
       let nh = helper.getNode('nh');
@@ -88,5 +112,5 @@ describe('Tibber Data fetch node-red', function () {
       });
       n1.receive({ payload: { 'query': '{generate {error}}' } });
     });
-  });
+  }); // it end
 });

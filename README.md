@@ -30,7 +30,7 @@ This node provides consumption, home or pricing data and statistics for the hous
 This nodes lets you perform your own queries. Look up Tibber API documentation and especially their API explorer to get going.
 In the future, this node is meant to also have features to make it easier to work with the data and incorporate it in the flows, hence separated from the data node. 
 
-The node expects json formated graphQL queries
+The node expects json wrapped graphQL queries. This is to open for more parameters in the object in the future, without having breaking changes in the node
 
     msg.payload = { 'query': '{ viewer { name }}'};
     msg.payload = { 'query': '{viewer {homes {primaryHeatingSource } } }' };

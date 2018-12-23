@@ -1,6 +1,6 @@
 <script type="text/javascript">
     RED.nodes.registerType('TibberQueryNode',{
-        category: 'function',
+        category: 'Tibber',
         color: '#a6bbcf',
         defaults: {
             options: {value:"",type:"TibberConfig", required:true},
@@ -15,7 +15,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="TibberDataNode">
+<script type="text/x-red" data-template-name="TibberQueryNode">
     <div class="form-row">
         <label for="node-input-options"><i class="icon-tag"></i> Credentials </label>
         <input type="text" id="node-input-options" placeholder="user">
@@ -27,7 +27,7 @@
 
 </script>
 
-<script type="text/x-red" data-help-name="TibberDataNode">
+<script type="text/x-red" data-help-name="TibberQueryNode">
     <p>A node for interacting with Tibber electricity provider. Using their graphql interface to get pricing, consumption etc. </p>
     <p> This node expects a graphQL json formatted query and will return response or error <br>
          msg.payload = { 'query': '{ viewer { name }}'};

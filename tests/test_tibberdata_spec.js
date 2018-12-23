@@ -4,6 +4,7 @@ var should = require('should');
 var helper = require('node-red-node-test-helper');
 var tibberDataNode = require('../nodes/tibberdata.js');
 var tibberConfNode = require('../nodes/tibberconf.js');
+var demoToken = 'd1007ead2dc84a2b82f0de19451c5fb22112f7ae11d19bf2bedb224a003ff74a';
 helper.init(require.resolve('node-red'));
 
 describe('Tibber Data fetch node-red', function () {
@@ -53,7 +54,7 @@ describe('Tibber Data fetch node-red', function () {
       { id: 'nh', type: 'helper' }
     ];
     // demo token from tibber only
-    let credentials = { nc: { 'token': 'd1007ead2dc84a2b82f0de19451c5fb22112f7ae11d19bf2bedb224a003ff74a' } };
+    let credentials = { nc: { 'token': demoToken } };
     helper.load([tibberDataNode, tibberConfNode], flow, credentials, function () {
       let n1 = helper.getNode('n1');
       let nh = helper.getNode('nh');
@@ -75,7 +76,7 @@ describe('Tibber Data fetch node-red', function () {
       { id: 'nh', type: 'helper' }
     ];
     // demo token from tibber only
-    let credentials = { nc: { 'token': 'd1007ead2dc84a2b82f0de19451c5fb22112f7ae11d19bf2bedb224a003ff74a' } };
+    let credentials = { nc: { 'token': demoToken} };
     helper.load([tibberDataNode, tibberConfNode], flow, credentials, function () {
       let n1 = helper.getNode('n1');
       let nh = helper.getNode('nh');
