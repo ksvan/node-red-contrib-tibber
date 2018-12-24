@@ -72,14 +72,20 @@ Simple nodejs module used across the nodes for different functions. Meant to cat
 * Get statistics
 * Get consumption
 * Execute grapql query
+* Execute commands on Tibber (mutations)
+* Subscribe to events (TBD)
 
  The predefined query returns an array with home objects mostly. Use the 'get()'' function for this
 
-    tibberLib.get('homes'); // a list of your homes and details for them all
-    tibberLib.get('consumption'); // consumption data pr day for last 7 days
-    tibberLib.get('pricing'); // current pricing
-    tibberLib.get('heatingSource'); //primary source
-    tibberLib.get('currentUser'); // active user performing this queries
+        tibberLib.get('homes'); // a list of your homes and details for them all
+        tibberLib.get('consumption'); // consumption data pr day for last 7 days
+        tibberLib.get('pricing'); // current pricing
+        tibberLib.get('heatingSource'); //primary source
+        tibberLib.get('currentUser'); // active user performing this queries
+
+The other main functions are 
+* query() - execute your own graphQL queries, including performing mutations
+* subscribe() - execute subscription queries and receive updates as it happens on Tibber (TBD)
 
 The query function will return the resulting data set below result.data.viewer in the dataset from Tibber. Try their API Explorer to figure it out.
 
