@@ -63,13 +63,12 @@ module.exports = {
         return { 'error': true, 'details': { 'status': response.status, 'statusText': response.statusText, 'response': response } };
       }
       let json = await response.text();
-      // console.dir(json);
       let result = JSON.parse(json);
       if (typeof result.errors !== 'undefined') {
         return { 'error': true, 'details': result.errors };
       }
       else {
-        return result.data.viewer;
+        return result.data;
       }
     }
     catch (error) {
@@ -81,7 +80,7 @@ module.exports = {
 
   },
   // Function for getting users home data
-  get: function (query) {
+  get: async function (query) {
     return this.getData(url, this.createRequest(queries[query]));
   },
   // function for sending your own query

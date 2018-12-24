@@ -25,8 +25,8 @@ describe('Tibberlib module function tests', function () {
   // Tibber module should be able to fetch home data.
   it('should fetch home data', function (done) {
     tibberLib.readConfig(testConfig);
-    tibberLib.get('homes').then((result, err) => {
-      let home = result.homes;
+    tibberLib.get('homes').then((result) => {
+      let home = result.viewer.homes;
       home.should.be.type('object');
       home[0].should.be.type('object');
       home[0].address.should.have.property('city');
@@ -42,7 +42,7 @@ describe('Tibberlib module function tests', function () {
   it('should fetch consumption data', function (done) {
     tibberLib.readConfig(testConfig);
     tibberLib.get('consumption').then((result, err) => {
-      let cons = result;
+      let cons = result.viewer;
       cons.should.be.type('object');
       cons.homes[0].consumption.nodes[0].should.have.property('totalCost');
       cons.homes[0].consumption.nodes[0].should.have.property('consumption');
@@ -57,7 +57,7 @@ describe('Tibberlib module function tests', function () {
   it('should fetch pricing data', function (done) {
     tibberLib.readConfig(testConfig);
     tibberLib.get('price').then((result, err) => {
-      let price = result;
+      let price = result.viewer;
       price.should.be.type('object');
       price.homes[0].currentSubscription.priceInfo.current.should.have.property('total');
       price.homes[0].currentSubscription.priceInfo.current.should.have.property('tax');

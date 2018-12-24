@@ -60,8 +60,9 @@ describe('Tibber Data fetch node-red', function () {
       let nh = helper.getNode('nh');
       n1.options.credentials.should.have.property('token');
       nh.on('input', function (msg) {
-        msg.payload.homes[0].should.have.property('id');
-        msg.payload.homes[0].address.should.have.property('city', 'Stockholm');
+        let home = msg.payload.viewer.homes[0];
+        home.should.have.property('id');
+        home.address.should.have.property('city', 'Stockholm');
         done();
       });
       n1.receive({ payload: { type: 'homes' } });
@@ -76,7 +77,7 @@ describe('Tibber Data fetch node-red', function () {
       { id: 'nh', type: 'helper' }
     ];
     // demo token from tibber only
-    let credentials = { nc: { 'token': demoToken} };
+    let credentials = { nc: { 'token': demoToken } };
     helper.load([tibberDataNode, tibberConfNode], flow, credentials, function () {
       let n1 = helper.getNode('n1');
       let nh = helper.getNode('nh');

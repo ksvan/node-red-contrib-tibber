@@ -7,7 +7,7 @@ var tibberConfNode = require('../nodes/tibberconf.js');
 var demoToken = 'd1007ead2dc84a2b82f0de19451c5fb22112f7ae11d19bf2bedb224a003ff74a';
 helper.init(require.resolve('node-red'));
 
-describe('Tibber Data fetch node-red', function () {
+describe('Tibber Query fetch node-red', function () {
   before(function (done) {
     helper.startServer(done);
   });
@@ -60,8 +60,8 @@ describe('Tibber Data fetch node-red', function () {
       let nh = helper.getNode('nh');
       n1.options.credentials.should.have.property('token');
       nh.on('input', function (msg) {
-        msg.payload.should.have.property('homes');
-        msg.payload.homes[0].should.have.property('primaryHeatingSource', 'ELECTRICITY');
+        msg.payload.viewer.should.have.property('homes');
+        msg.payload.viewer.homes[0].should.have.property('primaryHeatingSource', 'ELECTRICITY');
         done();
       });
       n1.receive({ payload: { query: '{viewer {homes {primaryHeatingSource } } }' } });
@@ -82,12 +82,13 @@ describe('Tibber Data fetch node-red', function () {
       let nh = helper.getNode('nh');
       n1.options.credentials.should.have.property('token');
       nh.on('input', function (msg) {
+        //console.dir(msg);
         msg.payload.should.have.property('error', true);
         msg.payload.should.have.property('details');
         msg.payload.details[0].should.have.property('message', 'operation not allowed for demo user');
         done();
       });
-      n1.receive({ payload: { 'query': 'mutation{ sendMeterReading(input:{homeId:"some home id", reading: 123}){time reading  }}' } });
+      n1.receive({ payload: { 'query': 'mutation{  sendPushNotification(input: {    title: \"Notification through API\",    message: \"Hello from me!!\",    screenToOpen: CONSUMPTION  }){    successful    pushedToNumberOfDevices  }}' } });
     });
   });
 
