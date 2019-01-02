@@ -78,6 +78,7 @@ module.exports = {
   },
   // Use WS to subscribe to a stream for some data - future release, return WS for others to handle
   getSubscription: async function (url, payload) {
+    // not working, trying multiple options with tests/test_ws_manual.js
     console.dir(payload);
     try {
       let ws = new WebSocket(url.replace('https', 'wss') + '/subscriptions', {
