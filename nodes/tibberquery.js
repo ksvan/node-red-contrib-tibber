@@ -27,13 +27,23 @@ module.exports = function (RED) {
         return { error: true, details: 'Missing query in payload' };
       }
       // Todo: add possibilities for other type of data returns, ie specific value only
-      tibber.query(msg.payload).then((result, err) => {
-        msg.payload = result;
-        node.send(msg);
-      }).catch((err) => {
-        node.warn('error: ' + err);
-        node.debug(err);
-      });
+      if (msg.payload.subscribe) {
+        let ws = tibber.subscribe(msg.payload);
+        ws.on('message', function (data) {
+          msg.payload = data;
+          node.send(msg);
+          console.log(data);
+        });
+      }
+      else {
+        tibber.query(msg.payload).then((result, err) => {
+          msg.payload = result;
+          node.send(msg);
+        }).catch((err) => {
+          node.warn('error: ' + err);
+          node.debug(err);
+        });
+      }
     });
   }
   RED.nodes.registerType('TibberQueryNode', TibberQueryNode);

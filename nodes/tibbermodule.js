@@ -1,6 +1,7 @@
 'use strict';
 const fetch = require('node-fetch');
 const fs = require('fs');
+const WebSocket = require('ws');
 var token, url;
 
 // Built in queries to simplfy things
@@ -8,9 +9,10 @@ const queries = {
   heatingSource: { query: '{viewer {homes {primaryHeatingSource } } }' },
   consumption: { query: '{viewer { homes {consumption(resolution: DAILY, last: 7) { nodes { from to totalCost unitCost unitPrice unitPriceVAT consumption consumptionUnit}}}}}' },
   price: { query: '{viewer {homes {currentSubscription {priceInfo {current {total energy tax startsAt }}}}}}' },
+  nextPrice: { query: '{viewer {homes {currentSubscription {priceInfo { current {total currency} today{ total startsAt } tomorrow{ total startsAt }}}}}}' },
   homes: { query: '{viewer {homes {id timeZone features{realTimeConsumptionEnabled} address {address1 postalCode city } owner {firstName lastName contactInfo {email mobile } } } } }' },
-  currentUser: { 'query': '{ viewer { name }}' },
-  error: { 'query': '{generate {error}}' } // for testing purpose, non-happy flow
+  currentUser: { query: '{ viewer { name }}' },
+  error: { query: '{generate {error}}' } // for testing purpose, non-happy flow
 };
 
 module.exports = {
@@ -49,7 +51,6 @@ module.exports = {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token
-        // 'Content-Length': query.length
       }
     };
     return opts;
@@ -75,9 +76,33 @@ module.exports = {
       return { 'error': true, 'details': error };
     }
   },
-  // Use WS to subscribe to a stream for some data - future release
-  getSubscription: function (url, payload) {
-
+  // Use WS to subscribe to a stream for some data - future release, return WS for others to handle
+  getSubscription: async function (url, payload) {
+    console.dir(payload);
+    try {
+      let ws = new WebSocket(url.replace('https', 'wss') + '/subscriptions', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'bearer ' + token,
+          Origin: 'https://api.tibber.com'
+        }
+      });
+      ws.on('error', function (error) {
+        return { 'error': true, 'details': error };
+      });
+      ws.on('open', function (message) {
+        console.dir(message);
+      });
+      // try to send subscription query
+      /* ws.send(JSON.stringify(payload), function ack (error) {
+        // IF error writing to socket. Async not necessarily caught by try/catch
+        return { 'error': true, 'details': error };
+      }); */
+      return ws; // return ws for handling
+    }
+    catch (error) {
+      return { 'error': true, 'details': error };
+    }
   },
   // Function for getting users home data
   get: async function (query) {
@@ -88,7 +113,7 @@ module.exports = {
     return this.getData(url, this.createRequest(query));
   },
   // function for getting a subscription/stream instead (not implemented yet)
-  subscribe: function (query) {
-    return this.getSubscription(url, this.createRequest(query));
+  subscribe: async function (query) {
+    return this.getSubscription(url, query);
   }
 };

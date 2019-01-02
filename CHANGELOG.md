@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Tibber pricing node - get forecast and current
 * Tibber statistics node
 * Support for Tibber grapql subscriptions and websockets
+* Dedicated support for finding cheapest predicted price tomorrow and today, return when
 
 ## Changed
 * Improved error handling

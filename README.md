@@ -27,6 +27,7 @@ This node provides consumption, home or pricing data and statistics for the hous
     
     msg.payload = {type: 'homes'};
     msg.payload = {type: 'pricing'};
+    msg.payload = {type: 'nextPrice'}
     msg.payload = {type: 'consumption'};
     msg.payload = {type: 'heatingSource'};
     msg.payload = {type: 'currentUser'};
@@ -40,6 +41,17 @@ The node expects json wrapped graphQL queries. This is to open for more paramete
 
     msg.payload = { 'query': '{ viewer { name }}'};
     msg.payload = { 'query': '{ viewer { homes { primaryHeatingSource } } }' };
+
+### Subscriptions
+GraphQL supports event subscriptions, based on similar query, but with the namespace subscription instead of ie viewer above. You can turn the query node into an event listener by giving the parameter 'subscribe: true'. This will cause the node to use websocket instead and listen for events on the socket. In case of events, the node will emit a msg.payload with the data recieved.
+Please note
+* The node expects your query to be a valid graphql ask for a subscription
+* There is currently no logic implemented for handling connectivity issues after initial setup, fixing/retry of the connection etc
+
+
+        msg.payload = { subscribe: true, query: 'subscription{ liveMeasurement(homeId:"c70dcbe5-4485-4821-933d-a8a86452737b"){timestamp power maxPower}}' }
+In this case, you will often need to give specific ids to target your event stream. In the case above, the homeid for the Tibber demo account is used.
+
 
 ## Return objects & values
 This will follow the Tibber datamodel for GraphQL and be highly dependent on your actually query. It's not as fixed as when working with REST APIs.
@@ -124,7 +136,7 @@ GraphQL is used like you would use REST APIs, to get data or execute function. Y
 # Troubleshooting
 * As always, networking issues might occur. These will be surfaced, but connection timeouts will be as slow as configured in your OS
 * GraphQL errors will mostly return 400 bad query. You could debug your query with Tibbers GraphQL explorer or debug the error object and dig into the details element of it. The nodes and tibberlib will try to surface underlying errors here.
-* 
+* Websockets may loose connection and subscriptions stop getting events. No logic for reconnect or otherwise fix connection in here as of yet, restart the node with a new subscription query (use an inject node or something).
 
 
 

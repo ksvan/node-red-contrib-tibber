@@ -50,6 +50,7 @@
     }
   },
   "dependencies": {
-    "node-fetch": "^2.3.0"
+    "node-fetch": "^2.3.0",
+    "websocket": "^1.0.28"
   }
 }

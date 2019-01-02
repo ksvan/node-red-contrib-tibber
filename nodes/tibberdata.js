@@ -1,3 +1,4 @@
+'use strict';
 module.exports = function (RED) {
   function TibberDataNode (config) {
     RED.nodes.createNode(this, config);
