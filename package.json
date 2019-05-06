@@ -37,9 +37,9 @@
     "eslint-plugin-node": "^9.0.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
-    "mocha": "^6.0.0",
+    "mocha": "^6.1.4",
     "node-red": "^0.20.0",
-    "node-red-node-test-helper": "^0.20.5",
+    "node-red-node-test-helper": "^0.2.2",
     "should": "^13.2.3"
   },
   "node-red": {
@@ -50,11 +50,19 @@
     }
   },
   "dependencies": {
-    "apollo-boost": "^0.1.28",
+    "apollo-boost": "^0.3.1",
+    "apollo-cache-inmemory": "^1.5.1",
+    "apollo-client": "^2.5.1",
+    "apollo-link": "^1.2.11",
+    "apollo-link-error": "^1.1.10",
+    "apollo-link-http": "^1.5.14",
+    "cross-fetch": "^3.0.2",
     "graphql": "^14.2.1",
     "graphql-tag": "^2.10.1",
     "node-fetch": "^2.5.0",
-    "websocket": "^1.0.28",
     "node-red": "^0.20.5"
+  },
+  "resolutions": {
+    "apollo/graphql": "^14.0.2"
   }
 }
