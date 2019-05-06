@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Query node support for variable input along with query or mutation.
 * Further support/test of mutation
 
+# 0.3.0
+## Changed
+- Removed bespoke fetch based graphql interface, replaced with apollo. For cache and subscription support
 
 # 0.2.0
 ## Addedd
