@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 # 0.3.0
 ## Changed
 - Removed bespoke fetch based graphql interface, replaced with apollo. For cache and subscription support
+- new Tibberlib implementation, now as class
 
 # 0.2.0
 ## Addedd
