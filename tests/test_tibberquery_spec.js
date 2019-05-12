@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 'use strict';
-var should = require('should');
-var helper = require('node-red-node-test-helper');
-var tibberQueryNode = require('../nodes/tibberquery.js');
-var tibberConfNode = require('../nodes/tibberconf.js');
-var demoToken = 'd1007ead2dc84a2b82f0de19451c5fb22112f7ae11d19bf2bedb224a003ff74a';
+let should = require('should');
+let helper = require('node-red-node-test-helper');
+let tibberQueryNode = require('../nodes/tibberquery.js');
+let tibberConfNode = require('../nodes/tibberconf.js');
+let demoToken = 'd1007ead2dc84a2b82f0de19451c5fb22112f7ae11d19bf2bedb224a003ff74a';
 helper.init(require.resolve('node-red'));
 
 describe('Tibber Query fetch node-red', function () {
@@ -58,7 +58,6 @@ describe('Tibber Query fetch node-red', function () {
     helper.load([tibberQueryNode, tibberConfNode], flow, credentials, function () {
       let n1 = helper.getNode('n1');
       let nh = helper.getNode('nh');
-      n1.options.credentials.should.have.property('token');
       nh.on('input', function (msg) {
         msg.payload.viewer.should.have.property('homes');
         msg.payload.viewer.homes[0].should.have.property('primaryHeatingSource', 'ELECTRICITY');
@@ -80,7 +79,6 @@ describe('Tibber Query fetch node-red', function () {
     helper.load([tibberQueryNode, tibberConfNode], flow, credentials, function () {
       let n1 = helper.getNode('n1');
       let nh = helper.getNode('nh');
-      n1.options.credentials.should.have.property('token');
       nh.on('input', function (msg) {
         //console.dir(msg);
         msg.payload.should.have.property('error', true);

@@ -58,11 +58,11 @@ describe('Tibber Data fetch node-red', function () {
     helper.load([tibberDataNode, tibberConfNode], flow, credentials, function () {
       let n1 = helper.getNode('n1');
       let nh = helper.getNode('nh');
-      n1.options.credentials.should.have.property('token');
       nh.on('input', function (msg) {
         let home = msg.payload.viewer.homes[0];
         home.should.have.property('id');
         home.address.should.have.property('city', 'Stockholm');
+         // console.dir(msg.payload.viewer.homes[0]);
         done();
       });
       n1.receive({ payload: { type: 'homes' } });
@@ -81,11 +81,11 @@ describe('Tibber Data fetch node-red', function () {
     helper.load([tibberDataNode, tibberConfNode], flow, credentials, function () {
       let n1 = helper.getNode('n1');
       let nh = helper.getNode('nh');
-      n1.options.credentials.should.have.property('token');
       nh.on('input', function (msg) {
         msg.payload.should.have.property('error', true);
         msg.payload.should.have.property('details');
         msg.payload.details.should.have.property('status', 400);
+
         done();
       });
       n1.receive({ payload: { type: 'error' } });
