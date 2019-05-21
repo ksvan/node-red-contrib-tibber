@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Addedd
 * Oauth client, switch from manual token from Tibber
-* Tibber graphQL query node - make your own requests
+
 * Tibber pricing node - get forecast and current
 * Tibber statistics node
 * Support for Tibber grapql subscriptions and websockets
@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Changed
 - Removed bespoke fetch based graphql interface, replaced with apollo. For cache and subscription support
 - new Tibberlib implementation, now as class
+- somewhat improved error handling again
+
 
 # 0.2.0
 ## Addedd
