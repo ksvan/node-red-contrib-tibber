@@ -4,30 +4,34 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
     var node = this;
     // set upp tibber integration for this node
-    const tibber = require('./tibbermodule.js');
+    const Tibber = require('./tibbermodule2.js');
     node.displayName = config.displayName;
     // get the config
     try {
       this.options = RED.nodes.getNode(config.options);
     }
     catch (err) {
-      node.error('Error, no login node exists: ' + err);
+      node.error('Tibber Data Error, no login node exists ', err);
       node.debug('Couldnt get config node : ' + node.options);
     }
     // validate config
     if (typeof node.options === 'undefined' || !node.options || !node.options.credentials.token || !node.options.endpoint) {
-      node.warn('No credentials given! Missing config node details. l-19 :' + node.options);
+      node.error('No credentials given! Missing config node details. l-19 :', node.options);
       return;
     }
-    tibber.setConfig({ token: node.options.credentials.token, url: node.options.endpoint });
+    let tibberLink = new Tibber(node.options.endpoint, node.options.credentials.token);
 
     node.on('input', function (msg) {
       // on msg.payload arrives, try to execute predefined query from tibberlib. Handle fails
-      tibber.get(msg.payload.type).then((result, err) => {
+      if (typeof msg.payload.type === 'undefined' || msg.payload.type === '') {
+        node.error('Tibber Error: no datatype given as input', 'No msg.payload,type was given');
+        return;
+      }
+      tibberLink.get(msg.payload.type).then((result, err) => {
         msg.payload = result;
         node.send(msg);
       }).catch((err) => {
-        node.warn('error: ' + err);
+        node.error('Tibber Data error: ', err);
         node.debug(err);
       });
     });

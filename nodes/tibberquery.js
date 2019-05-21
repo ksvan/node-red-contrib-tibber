@@ -1,9 +1,9 @@
 module.exports = function (RED) {
   function TibberQueryNode (config) {
     RED.nodes.createNode(this, config);
-    var node = this;
+    let node = this;
     // set upp tibber integration for this node
-    const tibber = require('./tibbermodule.js');
+    const Tibber = require('./tibbermodule2.js');
     node.displayName = config.displayName;
     node.name = config.displayName;
     // get the config
@@ -11,7 +11,7 @@ module.exports = function (RED) {
       this.options = RED.nodes.getNode(config.options);
     }
     catch (err) {
-      node.error('Error, no login node exists: ' + err);
+      node.error('Tibber Query Error, no login node exists: ', err);
       node.debug('Couldnt get config node : ' + node.options);
     }
     // validate config
@@ -19,16 +19,17 @@ module.exports = function (RED) {
       node.warn('No credentials given! Missing config node details. l-19 :' + node.options);
       return;
     }
-    tibber.setConfig({ token: node.options.credentials.token, url: node.options.endpoint });
+    let tibberLink = new Tibber(node.options.endpoint, node.options.credentials.token);
 
     node.on('input', function (msg) {
       // on msg.payload arrives, try to execute predefined query from tibberlib. Handle fails
       if (typeof msg.payload.query === 'undefined' || msg.payload.query === '') {
+        node.error('Error in query', 'Missing query in payload');
         return { error: true, details: 'Missing query in payload' };
       }
       // Todo: add possibilities for other type of data returns, ie specific value only
       if (msg.payload.subscribe) {
-        let ws = tibber.subscribe(msg.payload);
+        let ws = tibberLink.subscribe(msg.payload);
         ws.on('message', function (data) {
           msg.payload = data;
           node.send(msg);
@@ -36,11 +37,11 @@ module.exports = function (RED) {
         });
       }
       else {
-        tibber.query(msg.payload).then((result, err) => {
+        tibberLink.getQuery(msg.payload.query).then((result, err) => {
           msg.payload = result;
           node.send(msg);
         }).catch((err) => {
-          node.warn('error: ' + err);
+          node.error('TibberQuery error: ', err);
           node.debug(err);
         });
       }

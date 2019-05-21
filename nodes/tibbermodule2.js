@@ -4,9 +4,8 @@ const fetch = require('cross-fetch/polyfill');
 const { ApolloClient } = require('apollo-client');
 const { HttpLink } = require('apollo-link-http');
 const { ApolloLink } = require('apollo-link');
-const { setContext } = require('apollo-link-context');
+// const { setContext } = require('apollo-link-context');
 const { InMemoryCache } = require('apollo-cache-inmemory');
-const { onError } = require('apollo-link-error');
 const gql = require('graphql-tag');
 // Apollo config
 const apolloOptions = {
@@ -26,9 +25,9 @@ const apolloOptions = {
 // const ApolloClient = Boost.default;
 
 module.exports = class Tibber {
-  constructor (options) {
+  constructor (uri, token) {
     try {
-      this.client = this.initClient(options.url, options.token);
+      this.client = this.initClient(uri, token);
     }
     catch (e) {
       this.handleError('failed to initialize apollo client', e, true);
@@ -45,7 +44,7 @@ module.exports = class Tibber {
     };
   }
 
-  // set up apollo client
+  // set up apollo client for http
   initClient (uri, token) {
     // Middleware to set the headers
     const middlewareAuthLink = new ApolloLink((operation, forward) => {
@@ -56,7 +55,7 @@ module.exports = class Tibber {
         }
       });
       // console.log(operation.query.definitions);
-     return forward(operation);
+      return forward(operation);
     });
     const link = new HttpLink({
       uri: uri
@@ -73,30 +72,31 @@ module.exports = class Tibber {
     });
   }
 
+  // Set up client for subscription
+  initSubscription (uri, token) {
+
+  }
+
   // function for handling parsing and return of
   handleResult (result) {
-    console.log("handleResult");
+    console.log('handleResult');
     return result.data.viewer; // for now
   }
   // Function for log handling for this class. To be extended
   handleError (msg, obj, error) {
-    console.log('TibberClass : ' + msg);
-    console.dir(obj);
-
-    return 'error'; // improve after flow allows
+    // return json error object
+    // console.log(JSON.stringify(obj, null, 4));
+    return { error: true, details: obj };
   }
   getConfig () {
     return { url: this.url, token: this.token };
   }
   // Use WS to subscribe to a stream for some data - future release
   getSubscription (url, payload) {
-    
   }
   // Function for getting predefined queries
   async get (name) {
     // add input validator
-    console.log("Get");
-    
     let result;
     try {
       let query = this.queries[name];
@@ -104,15 +104,18 @@ module.exports = class Tibber {
     }
     catch (e) {
       return this.handleError('Failed to execute query', e, true);
-
     }
     return result.data;
   }
   // function for sending your own query - to be extended and abstracted with get()
   async getQuery (query) {
-    console.log("Query");
-    let result = await this.client.query({ query: gql`${query}` });
-    return result;
+    let result;
+    try {
+      result = await this.client.query({ query: gql`${query}` });
+    }
+    catch (e) {
+      return this.handleError('Failed to execute query', e, true);
+    }
+    return result.data;
   }
-
 };

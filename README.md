@@ -138,6 +138,37 @@ GraphQL is used like you would use REST APIs, to get data or execute function. Y
 * GraphQL errors will mostly return 400 bad query. You could debug your query with Tibbers GraphQL explorer or debug the error object and dig into the details element of it. The nodes and tibberlib will try to surface underlying errors here.
 * Websockets may loose connection and subscriptions stop getting events. No logic for reconnect or otherwise fix connection in here as of yet, restart the node with a new subscription query (use an inject node or something).
 
+## ApolloClient error object 
+
+        // TibberClass error from apollo
+        {
+            "graphQLErrors": [],
+            "networkError": {
+                "name": "ServerError",
+                "response": {
+                    "size": 0,
+                    "timeout": 0
+                },
+                "statusCode": 400,
+                "result": {
+                    "errors": [
+                        {
+                            "message": "Cannot query field \"generate\" on type \"Query\".",
+                            "locations": [
+                                {
+                                    "line": 2,
+                                    "column": 3
+                                }
+                            ],
+                            "extensions": {
+                                "code": "GRAPHQL_VALIDATION_FAILED"
+                            }
+                        }
+                    ]
+                }
+            },
+            "message": "Network error: Response not successful: Received status code 400"
+        }
 
 
 

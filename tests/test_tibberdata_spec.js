@@ -7,7 +7,7 @@ let tibberConfNode = require('../nodes/tibberconf.js');
 let demoToken = 'd1007ead2dc84a2b82f0de19451c5fb22112f7ae11d19bf2bedb224a003ff74a';
 helper.init(require.resolve('node-red'));
 
-describe('Tibber Data fetch node-red', function () {
+describe('Tibber Data node-red', function () {
   before(function (done) {
     helper.startServer(done);
   });
@@ -84,7 +84,7 @@ describe('Tibber Data fetch node-red', function () {
       nh.on('input', function (msg) {
         msg.payload.should.have.property('error', true);
         msg.payload.should.have.property('details');
-        msg.payload.details.should.have.property('status', 400);
+        msg.payload.details.networkError.should.have.property('statusCode', 400);
 
         done();
       });
