@@ -1,0 +1,185 @@
+[
+  {
+    "disabled": false,
+    "id": "e3975c0f.2bfdc",
+    "info": "",
+    "label": "Flow 1",
+    "type": "tab"
+  },
+  {
+    "displayName": "",
+    "id": "b4ee55cb.a63e88",
+    "options": "99463207.4b8f8",
+    "type": "TibberDataNode",
+    "wires": [
+      [
+        "1e5fc501.b2a04b"
+      ]
+    ],
+    "x": 300,
+    "y": 460,
+    "z": "e3975c0f.2bfdc"
+  },
+  {
+    "active": true,
+    "complete": "payload",
+    "console": false,
+    "id": "1e5fc501.b2a04b",
+    "name": "Data",
+    "targetType": "msg",
+    "tosidebar": true,
+    "tostatus": false,
+    "type": "debug",
+    "wires": [],
+    "x": 470,
+    "y": 460,
+    "z": "e3975c0f.2bfdc"
+  },
+  {
+    "crontab": "",
+    "id": "dec172a1.ad3c7",
+    "name": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "payload": "{\"type\":\"homes\"}",
+    "payloadType": "json",
+    "repeat": "",
+    "topic": "",
+    "type": "inject",
+    "wires": [
+      [
+        "b4ee55cb.a63e88"
+      ]
+    ],
+    "x": 120,
+    "y": 400,
+    "z": "e3975c0f.2bfdc"
+  },
+  {
+    "crontab": "",
+    "id": "176d6a5e.ac7d36",
+    "name": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "payload": "{\"type\":\"error\"}",
+    "payloadType": "json",
+    "repeat": "",
+    "topic": "",
+    "type": "inject",
+    "wires": [
+      [
+        "b4ee55cb.a63e88"
+      ]
+    ],
+    "x": 120,
+    "y": 340,
+    "z": "e3975c0f.2bfdc"
+  },
+  {
+    "crontab": "",
+    "id": "d63de30f.f220e",
+    "name": "Mutation error on demo",
+    "once": false,
+    "onceDelay": 0.1,
+    "payload": "{\"query\":\"mutation{  sendPushNotification(input: {    title: \\\"Notification through API\\\",    message: \\\"Hello from me!!\\\",    screenToOpen: CONSUMPTION  }){    successful    pushedToNumberOfDevices  }}\"}",
+    "payloadType": "json",
+    "repeat": "",
+    "topic": "",
+    "type": "inject",
+    "wires": [
+      [
+        "accd73c4.5d7fe"
+      ]
+    ],
+    "x": 160,
+    "y": 180,
+    "z": "e3975c0f.2bfdc"
+  },
+  {
+    "displayName": "",
+    "id": "accd73c4.5d7fe",
+    "options": "99463207.4b8f8",
+    "type": "TibberQueryNode",
+    "wires": [
+      [
+        "da85bd5a.0f6ec"
+      ]
+    ],
+    "x": 390,
+    "y": 160,
+    "z": "e3975c0f.2bfdc"
+  },
+  {
+    "active": true,
+    "complete": "payload",
+    "console": false,
+    "id": "da85bd5a.0f6ec",
+    "name": "Query",
+    "targetType": "msg",
+    "tosidebar": true,
+    "tostatus": false,
+    "type": "debug",
+    "wires": [],
+    "x": 570,
+    "y": 160,
+    "z": "e3975c0f.2bfdc"
+  },
+  {
+    "crontab": "",
+    "id": "513b93b1.07442c",
+    "name": "homes",
+    "once": false,
+    "onceDelay": 0.1,
+    "payload": "{\"query\":\"{viewer {homes{id}}}\"}",
+    "payloadType": "json",
+    "repeat": "",
+    "topic": "",
+    "type": "inject",
+    "wires": [
+      [
+        "accd73c4.5d7fe"
+      ]
+    ],
+    "x": 150,
+    "y": 120,
+    "z": "e3975c0f.2bfdc"
+  },
+  {
+    "id": "65c9599f.3e5738",
+    "name": "",
+    "scope": null,
+    "type": "catch",
+    "uncaught": false,
+    "wires": [
+      [
+        "43c820c2.9b888"
+      ]
+    ],
+    "x": 420,
+    "y": 240,
+    "z": "e3975c0f.2bfdc"
+  },
+  {
+    "active": true,
+    "complete": "payload",
+    "console": false,
+    "id": "43c820c2.9b888",
+    "name": "Catch",
+    "targetType": "msg",
+    "tosidebar": true,
+    "tostatus": false,
+    "type": "debug",
+    "wires": [],
+    "x": 570,
+    "y": 240,
+    "z": "e3975c0f.2bfdc"
+  },
+  {
+    "displayName": "Tibber Site",
+    "endpoint": "https://api.tibber.com/v1-beta/gql",
+    "id": "99463207.4b8f8",
+    "siteName": "Home",
+    "type": "TibberConfig",
+    "z": ""
+  }
+]
