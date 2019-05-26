@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-tibber",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Node-red package for using the Tibber API",
   "main": "index.js",
   "directories": {
@@ -57,11 +57,13 @@
     "apollo-link-context": "^1.0.17",
     "apollo-link-error": "^1.1.10",
     "apollo-link-http": "^1.5.14",
+    "apollo-link-ws": "^1.0.17",
     "cross-fetch": "^3.0.2",
     "graphql": "^14.2.1",
     "graphql-tag": "^2.10.1",
     "node-fetch": "^2.5.0",
-    "node-red": "^0.20.5"
+    "node-red": "^0.20.5",
+    "subscriptions-transport-ws": "^0.9.16"
   },
   "resolutions": {
     "apollo/graphql": "^14.0.2"
