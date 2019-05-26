@@ -4,9 +4,13 @@ const fetch = require('cross-fetch/polyfill');
 const { ApolloClient } = require('apollo-client');
 const { HttpLink } = require('apollo-link-http');
 const { ApolloLink } = require('apollo-link');
+const { split } = require('apollo-link');
+const { WebSocketLink } = require('apollo-link-ws');
+const { getMainDefinition } = require('apollo-utilities');
 // const { setContext } = require('apollo-link-context');
 const { InMemoryCache } = require('apollo-cache-inmemory');
 const gql = require('graphql-tag');
+const ws = require('ws');
 // Apollo config
 const apolloOptions = {
   watchQuery: {
@@ -26,6 +30,7 @@ const apolloOptions = {
 
 module.exports = class Tibber {
   constructor (uri, token) {
+    console.log('constructor');
     try {
       this.client = this.initClient(uri, token);
     }
@@ -46,6 +51,7 @@ module.exports = class Tibber {
 
   // set up apollo client for http
   initClient (uri, token) {
+    console.log('init');
     // Middleware to set the headers
     const middlewareAuthLink = new ApolloLink((operation, forward) => {
       const authorizationHeader = token ? `Bearer ${token}` : null;
@@ -57,19 +63,54 @@ module.exports = class Tibber {
       // console.log(operation.query.definitions);
       return forward(operation);
     });
-    const link = new HttpLink({
+
+    // create http link
+    const httpLink = new HttpLink({
       uri: uri
     });
+    const httpLinkToken = middlewareAuthLink.concat(httpLink);
+    // Create a WebSocket link:
+    let wsLink, wsLinkToken;
+    try {
+      wsLink = new WebSocketLink({
+        uri: uri,
+        options: {
+          reconnect: true,
+          connectionParams: {
+          authToken: token,
+          },
+        },
+        webSocketImpl: ws
+      });
+      wsLinkToken = middlewareAuthLink.concat(wsLink);
+    }
+    catch(e) { console.log(e); }
+    // use same client, but split query types on the two links
+    const splitLink = split(
+      // split based on operation type
+      ({ query }) => {
+        const definition = getMainDefinition(query);
+        return (
+          definition.kind === 'OperationDefinition' &&
+        definition.operation === 'subscription'
+        );
+      },
+      wsLinkToken,
+      httpLinkToken
+    );
 
+    // the final parts
     const cache = new InMemoryCache();
-    const httpLinkToken = middlewareAuthLink.concat(link);
+    
     // build client
-    return new ApolloClient({
-      link: httpLinkToken,
-      cache: cache,
-      fetch: fetch,
-      defaultOptions: apolloOptions
-    });
+    console.log('init2');
+      return new ApolloClient({
+        link: splitLink,
+        cache: cache,
+        fetch: fetch,
+        defaultOptions: apolloOptions
+      });
+
   }
 
   // Set up client for subscription
@@ -88,21 +129,37 @@ module.exports = class Tibber {
     // console.log(JSON.stringify(obj, null, 4));
     return { error: true, details: obj };
   }
-  getConfig () {
-    return { url: this.url, token: this.token };
-  }
+  
   // Use WS to subscribe to a stream for some data - future release
-  getSubscription (url, payload) {
+  getSubscription (query) {
+    let result;
+    try {
+      console.log('getS2');
+      result = this.client.subscribe({ query: gql`${query}` });
+      console.log('getS3')
+      console.dir(result);
+    }
+    catch (e) { 
+      console.log('getS4');
+      console.dir(e);
+      return this.handleError('Failed to execute query', e, true);
+    }
+    return result;
   }
   // Function for getting predefined queries
   async get (name) {
     // add input validator
+    console.log('get');
     let result;
     try {
       let query = this.queries[name];
+      console.log('get2');
       result = await this.client.query({ query: gql`${query}` });
+      console.log('get3');
     }
     catch (e) {
+      console.log('get4');
+      // console.dir(e);
       return this.handleError('Failed to execute query', e, true);
     }
     return result.data;
