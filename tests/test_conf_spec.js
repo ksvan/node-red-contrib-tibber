@@ -1,8 +1,8 @@
 /* eslint-env mocha */
 'use strict';
-var should = require('should');
-var helper = require('node-red-node-test-helper');
-var tibberNode = require('../nodes/tibberconf.js');
+let should = require('should');
+let helper = require('node-red-node-test-helper');
+let tibberNode = require('../nodes/tibberconf.js');
 const tibberEmail = 'test@fest.no';
 const tibberPassword = '12345';
 helper.init(require.resolve('node-red'));
