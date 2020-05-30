@@ -5,7 +5,7 @@ Tibber is a norwegian energy provider, made for people with smart houses, wantin
 
 Very EARLY stage development!
 
-[![Build Status](https://travis-ci.com/ksvan/node-red-contrib-tibber.svg?branch=master)](https://travis-ci.com) [![Greenkeeper badge](https://badges.greenkeeper.io/ksvan/node-red-contrib-tibber.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.com/ksvan/node-red-contrib-tibber.svg?branch=master)](https://travis-ci.com) 
 
 # Install
 To install (node-red)
