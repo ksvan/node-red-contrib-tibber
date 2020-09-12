@@ -58,10 +58,10 @@
     "apollo-link-error": "^1.1.10",
     "apollo-link-http": "^1.5.14",
     "apollo-link-ws": "^1.0.17",
-    "cross-fetch": "^3.0.2",
+    "cross-fetch": "^3.0.6",
     "graphql": "^14.2.1",
     "graphql-tag": "^2.10.1",
-    "node-fetch": "^2.5.0",
+    "node-fetch": "^2.6.1",
     "node-red": "^0.20.5",
     "subscriptions-transport-ws": "^0.9.16"
   },
