@@ -63,7 +63,7 @@
     "graphql-tag": "^2.10.1",
     "node-fetch": "^2.5.0",
     "node-red": "^0.20.5",
-    "subscriptions-transport-ws": "^0.9.16"
+    "subscriptions-transport-ws": "^0.9.19"
   },
   "resolutions": {
     "apollo/graphql": "^14.0.2"
